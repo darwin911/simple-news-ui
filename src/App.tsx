@@ -4,19 +4,26 @@ import React, { useState } from "react";
 
 import axios from "axios";
 
+const apiBaseUrl = process.env.REACT_APP_API_URL || "http://localhost:3001";
+
 function App() {
   const [newsUrl, setNewsUrl] = useState<string>("");
   const [sourceHtml, setSourceHtml] = useState<string[]>([""]);
   const [title, setTitle] = useState<string>("");
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const { data } = await axios.post("http://localhost:3001/news", {
+    const { data } = await axios.post(`${apiBaseUrl}/news`, {
       newsUrl,
     });
     if (data) {
       setSourceHtml(data.paragraphs);
       setTitle(data.title);
     }
+  };
+  const handleClear = () => {
+    setNewsUrl("");
+    setSourceHtml([""]);
+    setTitle("");
   };
   return (
     <div className="App">
@@ -27,14 +34,20 @@ function App() {
         process your request.
       </p>
       <form onSubmit={(e) => handleSubmit(e)}>
-        <input type="text" onChange={(e) => setNewsUrl(e.target.value)} />
+        <input
+          type="text"
+          onChange={(e) => setNewsUrl(e.target.value)}
+          value={newsUrl}
+        />
         <button>Get Outline</button>
       </form>
 
+      <button onClick={handleClear}>Clear</button>
+
       <article>
         <h2>{title}</h2>
-        {sourceHtml.map((item) => (
-          <p>{item}</p>
+        {sourceHtml.map((item, idx) => (
+          <p key={idx}>{item}</p>
         ))}
       </article>
     </div>
