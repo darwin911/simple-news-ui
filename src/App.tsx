@@ -10,8 +10,11 @@ function App() {
   const [newsUrl, setNewsUrl] = useState<string>("");
   const [sourceHtml, setSourceHtml] = useState<string[]>([""]);
   const [title, setTitle] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsLoading(true);
     const { data } = await axios.post(`${apiBaseUrl}/news`, {
       newsUrl,
     });
@@ -19,6 +22,7 @@ function App() {
       setSourceHtml(data.paragraphs);
       setTitle(data.title);
     }
+    setIsLoading(false);
   };
   const handleClear = () => {
     setNewsUrl("");
@@ -39,7 +43,9 @@ function App() {
           onChange={(e) => setNewsUrl(e.target.value)}
           value={newsUrl}
         />
-        <button>Get Outline</button>
+        <button disabled={isLoading || !newsUrl?.length ? true : false}>
+          Get Outline
+        </button>
       </form>
 
       <button onClick={handleClear}>Clear</button>
@@ -49,6 +55,8 @@ function App() {
         {sourceHtml.map((item, idx) => (
           <p key={idx}>{item}</p>
         ))}
+
+        {isLoading ? <span className="loader"></span> : null}
       </article>
     </div>
   );
