@@ -2,33 +2,22 @@ import "./App.css";
 
 import React, { useState } from "react";
 
-import axios from "axios";
-
-const apiBaseUrl = process.env.REACT_APP_API_URL || "http://localhost:3001";
+import { NewsForm } from "./Components/NewsForm/NewsForm";
 
 function App() {
   const [newsUrl, setNewsUrl] = useState<string>("");
   const [sourceHtml, setSourceHtml] = useState<string[]>([""]);
   const [title, setTitle] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-    const { data } = await axios.post(`${apiBaseUrl}/news`, {
-      newsUrl,
-    });
-    if (data) {
-      setSourceHtml(data.paragraphs);
-      setTitle(data.title);
-    }
-    setIsLoading(false);
-  };
   const handleClear = () => {
     setNewsUrl("");
     setSourceHtml([""]);
     setTitle("");
+    setError(null);
   };
+
   return (
     <div className="App">
       <h1>Simple News</h1>
@@ -37,16 +26,16 @@ function App() {
         contents of the news article. Please allow for a few seconds in order to
         process your request.
       </p>
-      <form onSubmit={(e) => handleSubmit(e)}>
-        <input
-          type="text"
-          onChange={(e) => setNewsUrl(e.target.value)}
-          value={newsUrl}
-        />
-        <button disabled={isLoading || !newsUrl?.length ? true : false}>
-          Get Outline
-        </button>
-      </form>
+      <NewsForm
+        isLoading={isLoading}
+        setIsLoading={setIsLoading}
+        newsUrl={newsUrl}
+        setNewsUrl={setNewsUrl}
+        setTitle={setTitle}
+        setSourceHtml={setSourceHtml}
+        error={error}
+        setError={setError}
+      />
 
       <button onClick={handleClear}>Clear</button>
 

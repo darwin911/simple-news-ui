@@ -1,3 +1,7 @@
+.error-message {
+  color: red;
+}
+
 .loader {
   display: block;
   margin: 0 auto;
