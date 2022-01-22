@@ -10,7 +10,7 @@ export const Footer = () => {
         <input
           type="hidden"
           name="item_name"
-          value="Making things to fix problems in a simple. Hope whatever I built helped you today. Thank you!"
+          value="Making things to fix problems in a simple way. Hope whatever I built helped you today. Thank you!"
         />
         <input type="hidden" name="currency_code" value="USD" />
         <input
