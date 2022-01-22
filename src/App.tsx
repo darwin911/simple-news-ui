@@ -2,6 +2,7 @@ import "./App.css";
 
 import React, { useState } from "react";
 
+import { Footer } from "./Components/Footer/Footer";
 import { NewsForm } from "./Components/NewsForm/NewsForm";
 
 function App() {
@@ -20,12 +21,15 @@ function App() {
 
   return (
     <div className="App">
-      <h1>Simple News</h1>
+      <header>
+        <h1>Simple News</h1>
+      </header>
       <p>
         Paste a link to a news site, and hit Get Outline button to see the raw
         contents of the news article. Please allow for a few seconds in order to
         process your request.
       </p>
+      <hr />
       <NewsForm
         isLoading={isLoading}
         setIsLoading={setIsLoading}
@@ -47,6 +51,7 @@ function App() {
 
         {isLoading ? <span className="loader"></span> : null}
       </article>
+      <Footer />
     </div>
   );
 }

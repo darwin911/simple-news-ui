@@ -63,7 +63,7 @@ export const NewsForm: React.FC<NewsFormProps> = ({
   }, [errors, setError]);
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(onSubmit)} className="news-form">
       <input
         disabled={isLoading}
         type="text"
